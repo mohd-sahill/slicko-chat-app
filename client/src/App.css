@@ -13,6 +13,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 150px;
 }
 
 .join_info div{
@@ -20,14 +21,18 @@
 }
 
 .join_info input{
-    padding: 6px;
+    width: 250px;
+    margin: 10px;
+    padding: 10px;
+    border: 1.8px solid #0040ff;
+    border-radius: 5px;
 }
 
 .btn{
     background-color: #0040ff;
-    padding: 10px;
+    padding: 7px;
     color: white;
-    font-weight: bold;
+    font-weight: 400;
     font-size: 18px;
     border: 1px solid #454568;
     border-radius: 6px;
@@ -39,8 +44,8 @@
        width: 30%;
        margin: auto;
        position: relative;
-       top: 50px;
-       height: 500px;
+       top: 10px;
+       height: 550px;
        display: flex;
        flex-direction: column;
        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
@@ -50,7 +55,7 @@
 .header{
     background-color:#0040ff ;
     color: white;
-    padding: 10px;
+    padding: 2px;
 }
 
 .header p , h2{
@@ -59,8 +64,7 @@
 
 .message-space{
     height: 100%;
-    background-color: rgb(214, 208, 208);
-   overflow-y: scroll;
+    background-color: rgb(233, 225, 225);
     border-left: 1px solid;
     border-right: 1px solid;
     display: flex;
@@ -87,15 +91,28 @@
 
   /* //chat box style  */
 
-  .message{
+  #you{
     width: 150px;
     height: auto;
-    font-size: 12px;
+    font-size: 14px;
     display: flex;
     align-self: flex-end;
     flex-direction: column;
     background-color: #0040ff;
     color: white;
+    padding: 7px;
+    margin: 6px 25px;
+    border-radius: 6px;
+}
+  #other{
+    width: 150px;
+    height: auto;
+    font-size: 14px;
+    display: flex;
+    align-self: flex-start;
+    flex-direction: column;
+    background-color: white;
+    color: black;
     padding: 7px;
     margin: 6px 25px;
     border-radius: 6px;

@@ -3,21 +3,24 @@ import io from "socket.io-client";
 import { useState } from "react";
 import ChatRoom from "./ChatRoom";
 
-const socket = io.connect("http://localhost:3001")
+const socket = io.connect("http://localhost:3001");
 
 function App() {
   const [userName, setUserName] = useState("");
   const [roomId, setRoomId] = useState("");
+  const [showChat, setShowChat] = useState(false);
 
   const joinRoom = () => {
-    if(userName !== "" && roomId !== ""){
-     socket.emit("join_room",roomId)
+    if (userName !== "" && roomId !== "") {
+      socket.emit("join_room", roomId);
+      setShowChat(true);
     }
-  }
+  };
   return (
     <>
-      <div className="join_info">
-        <div>
+      {!showChat ? (
+        <div className="join_info">
+          <h1 style={{"fontSize" : "50px"}}>JoIn ChAt</h1>
           <input
             type="text"
             placeholder="sahil"
@@ -32,12 +35,14 @@ function App() {
               setRoomId(event.target.value);
             }}
           />
+
+          <button className="btn" onClick={joinRoom}>
+            Join room
+          </button>
         </div>
-       
-          <button className="btn" onClick={joinRoom}>Join room</button>
-     
-      </div>
-      <ChatRoom socket={socket} userName ={userName} roomId ={roomId}/>
+      ) : (
+        <ChatRoom socket={socket} userName={userName} roomId={roomId} />
+      )}
     </>
   );
 }

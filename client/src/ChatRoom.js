@@ -1,68 +1,63 @@
 import React, { useState, useEffect } from "react";
+import ScrollToBottom from "react-scroll-to-bottom"
 import icon from "./images/icon.png";
 import { IoSendSharp } from "react-icons/io5";
 
-function ChatRoom({ socket, userName, room }) {
+function ChatRoom({ socket, userName, roomId }) {
   const [message, setMessage] = useState("");
-  const [data, setData] = useState([]);
+  const [messageList, setMessageList] = useState([]);
 
   const sendMessage = async () => {
     if (message !== "") {
       const messageData = {
-        room: room,
+        room: roomId,
         author: userName,
         message: message,
         time: new Date().getHours() + ":" + new Date().getMinutes(),
       };
       await socket.emit("send_message", messageData);
+      setMessageList((list) => [...list, messageData]);
+      setMessage("")
     }
   };
 
   useEffect(() => {
-    socket.on("send_message", (data) => {
-      setData(data);
+    socket.on("recieve_message", (data) => {
+      setMessageList((list) => [...list, data]);
     });
   }, [socket]);
-  console.log(data);
   return (
     <main className="container">
       <div className="header">
         <img src={icon} alt="altimg" />
         <h2>Hi there!</h2>
-        <p>chat privately with any of your friends through this app</p>
       </div>
+
       <div className="message-space">
-        <div className="message">
-          <div className="text">
-            that is awesome Lorem ipsum, dolor sit amet consectetur adipisicing
-            elit. In ad maiores quam tenetur itaque officia assumenda dolor
-            commodi laboriosam iure, voluptatum incidunt, quidem sit nisi eos
-            aperiam voluptate corrupti pariatur?
-          </div>
-          <div className="info">
-            <p>11:1</p>
-            <p style={{ fontWeight: "bolder" }}>Deved</p>
-          </div>
-        </div>
-        <div className="message">
-          <div className="text">
-            that is awesome Lorem ipsum, dolor sit amet consectetur adipisicing
-            elit. In ad maiores quam tenetur itaque officia assumenda dolor
-            commodi laboriosam iure, voluptatum incidunt, quidem sit nisi eos
-            aperiam voluptate corrupti pariatur?
-          </div>
-          <div className="info">
-            <p>11:1</p>
-            <p style={{ fontWeight: "bolder" }}>Deved</p>
-          </div>
-        </div>
+      <ScrollToBottom className = "message-space">
+        { messageList.map((messageContent) => {
+          return (
+            <div className="message" id={userName === messageContent.author ? "you" : "other"}>
+              <div className="text">{messageContent.message}</div>
+              <div className="info">
+                <p>{messageContent.time}</p>
+                <p style={{ fontWeight: "bolder" }}>{messageContent.author}</p>
+              </div>
+            </div>
+          );
+        })}
+        </ScrollToBottom>
       </div>
       <div className="input-sr">
         <input
           type="text"
+          value = {message}
           placeholder="type your message"
           onChange={(event) => {
             setMessage(event.target.value);
+          }}
+          onKeyPress={(event) => {
+            event.key === "Enter" && sendMessage();
           }}
         />
         <button onClick={sendMessage}>
