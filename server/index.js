@@ -2,10 +2,10 @@ const express = require("express")
 const app = express()
 const http = require('http')
 const cors = require('cors')
-const server = http.createServer(app) 
 const { Server } = require("socket.io")
-
 app.use(cors())
+
+const server = http.createServer(app) 
 
 const io = new Server(server, {
     cors: {
@@ -14,9 +14,18 @@ const io = new Server(server, {
     }
 })
 
+
+
 io.on("connection" , (socket) => {
-    console.log(socket.id);
+    socket.on("join_room",(data) => {
+        socket.join(data)
+        console.log(`userID :${socket.id} room : ${data}`);
+    })
+    socket.on("send_message",(data) => {
+       socket.emit("send_message",data)
+    })
     
+    console.log("user connected");
     socket.on("disconnect", () => {
         console.log("user disconnected");
     })

@@ -1,26 +1,44 @@
-import './App.css';
-import icon from "./images/icon.png"
-import { IoSendSharp} from "react-icons/io5"
+import "./App.css";
+import io from "socket.io-client";
+import { useState } from "react";
+import ChatRoom from "./ChatRoom";
+
+const socket = io.connect("http://localhost:3001")
+
 function App() {
+  const [userName, setUserName] = useState("");
+  const [roomId, setRoomId] = useState("");
+
+  const joinRoom = () => {
+    if(userName !== "" && roomId !== ""){
+     socket.emit("join_room",roomId)
+    }
+  }
   return (
- <>
-  <main className="container">
-    <div className="header">
-  <img src={icon} alt="image" />
-      <h2>Hi there!</h2>
-      <p>chat privately with any of your friends through this app</p>
-    </div>
-    <div className="message-space">
-      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam pariatur quisquam saepe optio debitis quia deserunt, quibusdam est, repudiandae exercitationem at temporibus reiciendis officia distinctio, suscipit odio laborum ab illum.</p>
-      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam pariatur quisquam saepe optio debitis quia deserunt, quibusdam est, repudiandae exercitationem at temporibus reiciendis officia distinctio, suscipit odio laborum ab illum.</p>
-      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam pariatur quisquam saepe optio debitis quia deserunt, quibusdam est, repudiandae exercitationem at temporibus reiciendis officia distinctio, suscipit odio laborum ab illum.</p>
-    </div>
-    <div className="input-sr">
-    <input type="text" placeholder = "type your message"/>
-    <button><IoSendSharp  style={{color: '#0040ff', fontSize: '20px'}} /></button>
-    </div>
-  </main>
- </>
+    <>
+      <div className="join_info">
+        <div>
+          <input
+            type="text"
+            placeholder="sahil"
+            onChange={(event) => {
+              setUserName(event.target.value);
+            }}
+          />
+          <input
+            type="text"
+            placeholder="Room8748174"
+            onChange={(event) => {
+              setRoomId(event.target.value);
+            }}
+          />
+        </div>
+       
+          <button className="btn" onClick={joinRoom}>Join room</button>
+     
+      </div>
+      <ChatRoom socket={socket} userName ={userName} roomId ={roomId}/>
+    </>
   );
 }
 
