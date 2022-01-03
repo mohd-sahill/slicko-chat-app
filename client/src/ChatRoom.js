@@ -37,11 +37,11 @@ function ChatRoom({ socket, userName, roomId }) {
       <ScrollToBottom className = "message-space">
         { messageList.map((messageContent) => {
           return (
-            <div className="message" id={userName === messageContent.author ? "you" : "other"}>
+            <div id={userName === messageContent.author ? "you" : "other"}>
               <div className="text">{messageContent.message}</div>
               <div className="info">
-                <p>{messageContent.time}</p>
-                <p style={{ fontWeight: "bolder" }}>{messageContent.author}</p>
+                <p style={{"marginTop":"6px", "fontFamily": "serif" , "fontSize" : "12px"}}>{messageContent.time}</p>
+                <p style={{ "fontWeight": "bolder" }}>{messageContent.author}</p>
               </div>
             </div>
           );
